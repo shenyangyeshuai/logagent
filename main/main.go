@@ -27,8 +27,17 @@ func main() {
 		return
 	}
 
-	// 3. 初始化 tailf
-	err = tailf.InitTail(appConfig.Collects)
+	// 3. 初始化 etcd
+	err = initEtcd(appConfig.EtcdAddr)
+	if err != nil {
+		logs.Error("etcd 初始化失败: %v", err)
+		return
+	}
+	cocs := GetCocs()
+
+	// 4. 初始化 tailf
+	// err = tailf.InitTail(appConfig.Collects)
+	err = tailf.InitTail(cocs)
 	if err != nil {
 		logs.Error("tailf 初始化失败: %v", err)
 		return
@@ -44,7 +53,7 @@ func main() {
 	//	}
 	// }()
 
-	// 4. 初始化 kafka
+	// 5. 初始化 kafka
 	err = kafka.InitKafka(appConfig.KafkaAddr)
 	if err != nil {
 		logs.Error("kafka 初始化失败: %v", err)

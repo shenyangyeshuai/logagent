@@ -15,6 +15,7 @@ type Config struct {
 	LogPath   string
 	Collects  []*tailf.CollectConfig
 	KafkaAddr string
+	EtcdAddr  string
 }
 
 func NewConfig() *Config {
@@ -40,6 +41,7 @@ func loadConfig(typ, filename string) error {
 	appConfig.Collects = append(appConfig.Collects, collectConfig)
 
 	appConfig.KafkaAddr = conf.String("kafka::addr")
+	appConfig.EtcdAddr = conf.String("etcd::addr")
 
 	return nil
 }
